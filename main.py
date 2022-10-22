@@ -4,32 +4,36 @@ from dotenv import load_dotenv
 import os
 
 
-def shorten_url(token, user_url):
+short_url = 'https://api-ssl.bitly.com/v4/bitlinks'
+counter_url = 'https://api-ssl.bitly.com/v4/bitlinks/{}/clicks/summary'
+is_bitlink_url = 'https://api-ssl.bitly.com/v4/bitlinks/{}'
+
+
+def shorten_url(bitly_token, user_url):
     response = requests.post(
-        api_shorten_url,
-        headers={'Authorization': f'Bearer {token}'},
+        short_url,
+        headers={'Authorization': f'Bearer {bitly_token}'},
         json={"long_url": user_url}
     )
     response.raise_for_status()
-    print(response.json()['link'])
     return response.json()['link']
 
 
-def count_clicks(token, user_url):
+def count_clicks(bitly_token, user_url):
     parsed_url = urlparse(user_url)
     response = requests.get(
-        api_url_counter.format(f'{parsed_url.netloc}{parsed_url.path}'),
-        headers={'Authorization': f'Bearer {token}'}
+        counter_url.format(f'{parsed_url.netloc}{parsed_url.path}'),
+        headers={'Authorization': f'Bearer {bitly_token}'}
     )
     response.raise_for_status()
     return response.json()['total_clicks']
 
 
-def is_bitlink(token, user_url):
+def is_bitlink(bitly_token, user_url):
     parsed_url = urlparse(user_url)
     response = requests.get(
-        api_info.format(f'{parsed_url.netloc}{parsed_url.path}'),
-        headers={'Authorization': f'Bearer {token}'}
+        is_bitlink_url.format(f'{parsed_url.netloc}{parsed_url.path}'),
+        headers={'Authorization': f'Bearer {bitly_token}'}
     )
     return response.ok
 
@@ -37,16 +41,13 @@ def is_bitlink(token, user_url):
 if __name__ == '__main__':
     user_url = input('Input url: ')
     load_dotenv()
-    token = os.environ['TOKEN']
-    api_shorten_url = 'https://api-ssl.bitly.com/v4/bitlinks'
-    api_url_counter = 'https://api-ssl.bitly.com/v4/bitlinks/{}/clicks/summary'
-    api_info = 'https://api-ssl.bitly.com/v4/bitlinks/{}'
+    bitly_token = os.environ['TOKEN']
     try:
-        if is_bitlink(token, user_url):
-            clicks_count = count_clicks(token, user_url)
+        if is_bitlink(bitly_token, user_url):
+            clicks_count = count_clicks(bitly_token, user_url)
             print('Count clicks :', clicks_count)
         else:
-            bitly_url = shorten_url(token, user_url)
+            bitly_url = shorten_url(bitly_token, user_url)
             print(f'Bitlink : {bitly_url}')
     except requests.exceptions.HTTPError:
         print("You have entered incorrect url, or you made too much requests")
