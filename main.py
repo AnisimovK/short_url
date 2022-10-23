@@ -41,7 +41,7 @@ def is_bitlink(bitly_token, user_url):
 if __name__ == '__main__':
     user_url = input('Input url: ')
     load_dotenv()
-    bitly_token = os.environ['TOKEN']
+    bitly_token = os.environ['BITLY_TOKEN']
     try:
         if is_bitlink(bitly_token, user_url):
             clicks_count = count_clicks(bitly_token, user_url)
