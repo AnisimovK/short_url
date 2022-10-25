@@ -28,5 +28,5 @@ Get api bitly api token, place it to .env file in count_clicks directory
 
 ```
 cd short_url
-echo "TOKEN=absbsbsbsbssbsbba22222222341414asd" >> .env
+echo "BITLY_TOKEN=absbsbsbsbssbsbba22222222341414asd" >> .env
 ```
