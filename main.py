@@ -5,8 +5,8 @@ import os
 import argparse
 
 
-
 def shorten_url(token, user_url):
+    api_shorten_url = 'https://api-ssl.bitly.com/v4/bitlinks'
     response = requests.post(
         api_shorten_url,
         headers={'Authorization': f'Bearer {token}'},
@@ -17,6 +17,7 @@ def shorten_url(token, user_url):
 
 
 def count_clicks(token, user_url):
+    api_url_counter = 'https://api-ssl.bitly.com/v4/bitlinks/{}/clicks/summary'
     parsed_url = urlparse(user_url)
     response = requests.get(
         api_url_counter.format(f'{parsed_url.netloc}{parsed_url.path}'),
@@ -27,6 +28,7 @@ def count_clicks(token, user_url):
 
 
 def is_bitlink(token, user_url):
+    api_info = 'https://api-ssl.bitly.com/v4/bitlinks/{}'
     parsed_url = urlparse(user_url)
     response = requests.get(
         api_info.format(f'{parsed_url.netloc}{parsed_url.path}'),
@@ -45,9 +47,6 @@ if __name__ == '__main__':
     user_url = parser.parse_args().user_url
     load_dotenv()
     token = os.environ['BITLY_TOKEN']
-    api_shorten_url = 'https://api-ssl.bitly.com/v4/bitlinks'
-    api_url_counter = 'https://api-ssl.bitly.com/v4/bitlinks/{}/clicks/summary'
-    api_info = 'https://api-ssl.bitly.com/v4/bitlinks/{}'
     try:
         if is_bitlink(token, user_url):
             clicks_count = count_clicks(token, user_url)
