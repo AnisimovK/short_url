@@ -17,10 +17,10 @@ def shorten_url(token, user_url):
 
 
 def count_clicks(token, user_url):
-    api_url_counter = 'https://api-ssl.bitly.com/v4/bitlinks/{}/clicks/summary'
+    api_counter_url = 'https://api-ssl.bitly.com/v4/bitlinks/{}/clicks/summary'
     parsed_url = urlparse(user_url)
     response = requests.get(
-        api_url_counter.format(f'{parsed_url.netloc}{parsed_url.path}'),
+        api_counter_url.format(f'{parsed_url.netloc}{parsed_url.path}'),
         headers={'Authorization': f'Bearer {token}'}
     )
     response.raise_for_status()
