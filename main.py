@@ -28,10 +28,10 @@ def count_clicks(token, user_url):
 
 
 def is_bitlink(token, user_url):
-    api_info = 'https://api-ssl.bitly.com/v4/bitlinks/{}'
+    api_info_url = 'https://api-ssl.bitly.com/v4/bitlinks/{}'
     parsed_url = urlparse(user_url)
     response = requests.get(
-        api_info.format(f'{parsed_url.netloc}{parsed_url.path}'),
+        api_info_url.format(f'{parsed_url.netloc}{parsed_url.path}'),
         headers={'Authorization': f'Bearer {token}'}
     )
     return response.ok
