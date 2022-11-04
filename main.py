@@ -13,7 +13,6 @@ def shorten_url(token, user_url):
         json={"long_url": user_url}
     )
     response.raise_for_status()
-    print(response.json()['link'])
     return response.json()['link']
 
 
